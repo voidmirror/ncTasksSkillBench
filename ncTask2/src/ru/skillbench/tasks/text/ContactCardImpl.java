@@ -2,10 +2,14 @@ package ru.skillbench.tasks.text;
 
 import java.time.Period;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 public class ContactCardImpl implements ContactCard {
-
+    String fullName;
+    String organization;
+    Date bday;
+    
 
     @Override
     public ContactCard getInstance(Scanner scanner) {
@@ -14,6 +18,7 @@ public class ContactCardImpl implements ContactCard {
 
     @Override
     public ContactCard getInstance(String data) {
+        System.out.println(data);
         return null;
     }
 
