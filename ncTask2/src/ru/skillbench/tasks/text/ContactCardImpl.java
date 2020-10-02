@@ -1,49 +1,68 @@
 package ru.skillbench.tasks.text;
 
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ContactCardImpl implements ContactCard {
-    String fullName;
-    String organization;
-    Date bday;
-    
+    private String fullName;                     //VCard: FN
+    private String organization;                 //VCard: ORG
+    private String gender;                       //VCard: GENDER  //TODO: Если поле GENDER отсутствует в данных или равно "M", этот метод возвращает false
+    private Calendar birthday;                   //VCard: BDAY
+    private HashMap<String, String> telephone;   //VCard: TEL
+
+
 
     @Override
     public ContactCard getInstance(Scanner scanner) {
+        ArrayList<String> list = new ArrayList<>();
+        if (scanner.hasNext()) {
+            StringBuffer s = new StringBuffer();
+            String[] sarr;
+//            String data = scanner.next();
+//            s = scanner.next().split("\r\n");
+            while (scanner.hasNext()) {
+                s.append(scanner.next());
+            }
+            sarr = s.toString().split("\r\n");
+
+            System.out.println(sarr[0]);
+        }
         return null;
     }
 
     @Override
     public ContactCard getInstance(String data) {
-        System.out.println(data);
-        return null;
+        Scanner scanner = new Scanner(data);
+        return getInstance(scanner);
     }
 
     @Override
     public String getFullName() {
-        return null;
+        return fullName;
     }
 
     @Override
     public String getOrganization() {
-        return null;
+        return organization;
     }
 
     @Override
     public boolean isWoman() {
-        return false;
+        return gender.equals("F");
     }
 
     @Override
     public Calendar getBirthday() {
-        return null;
+        return birthday;
     }
 
     @Override
     public Period getAge() {
+        DateTimeFormatter formatter;    //TODO: понять, как оно работает
         return null;
     }
 
