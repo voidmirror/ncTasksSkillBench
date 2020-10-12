@@ -117,7 +117,7 @@ public class TreeNodeImpl implements TreeNode {
         if (getParent().getData() != data) {
             getParent().findParent(data);
         } else {
-            
+            return getParent();
         }
         return null;
     }
