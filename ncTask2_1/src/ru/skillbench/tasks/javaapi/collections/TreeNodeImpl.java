@@ -1,8 +1,6 @@
 package ru.skillbench.tasks.javaapi.collections;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.*;
 
 public class TreeNodeImpl implements TreeNode {
     private TreeNode parent = null;
@@ -99,11 +97,28 @@ public class TreeNodeImpl implements TreeNode {
             tmp = tmp.getParent();
         }
         //TODO: в nodes реверсировать список, вызов data последовательно
-        return null;
+        Collections.reverse(nodes);
+        String s = "";
+        for (int i = 0; i < nodes.size(); i++) {
+            if (nodes.get(i).getData() != null) {
+                s.concat(nodes.get(i).getData().toString());
+            } else {
+                s.concat("empty");
+            }
+            if (nodes.size() - i > 1) {
+                s.concat("->");
+            }
+        }
+        return s;
     }
 
     @Override
     public TreeNode findParent(Object data) {
+        if (getParent().getData() != data) {
+            getParent().findParent(data);
+        } else {
+            
+        }
         return null;
     }
 
