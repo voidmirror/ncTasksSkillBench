@@ -4,10 +4,15 @@ import java.util.*;
 
 public class TreeNodeImpl implements TreeNode {
     private TreeNode parent = null;
-    private ArrayList<TreeNode> children;
+    private ArrayList<TreeNode> children = new ArrayList<>();
     private boolean expanded;
     private Object data = null;
 
+    TreeNodeImpl() {};
+    TreeNodeImpl(Object data) {
+        this.data = data;
+    }
+    
     @Override
     public TreeNode getParent() {
         return parent;
@@ -49,8 +54,8 @@ public class TreeNodeImpl implements TreeNode {
 
     @Override
     public void addChild(TreeNode child) {
-        child.setParent(this);
         children.add(child);
+        child.setParent(this);
     }
 
     @Override
@@ -91,7 +96,13 @@ public class TreeNodeImpl implements TreeNode {
     @Override
     public String getTreePath() {
         ArrayList<TreeNode> nodes = new ArrayList<>();
-        TreeNode tmp = getParent();
+        TreeNode tmp;
+        if (getParent() != null) {
+             tmp = getParent();
+        } else {
+            tmp = null;
+        }
+
         while (tmp.getParent() != null) {
             nodes.add(tmp);
             tmp = tmp.getParent();
@@ -114,7 +125,7 @@ public class TreeNodeImpl implements TreeNode {
 
     @Override
     public TreeNode findParent(Object data) {
-        if (getParent().getData() != data) {
+        if (getParent().getData().equals(data)) {
             getParent().findParent(data);
         } else {
             return getParent();
@@ -124,6 +135,21 @@ public class TreeNodeImpl implements TreeNode {
 
     @Override
     public TreeNode findChild(Object data) {
+        for (TreeNode tn : children) {
+            if (data == null) {
+                if (tn.getData() == null) {
+                    return this;
+                } else {
+                    tn.findChild(data);
+                }
+            } else {
+                if (tn.getData() != null && tn.getData().equals(data)) {
+                    return this;
+                } else {
+                    tn.findChild(data);
+                }
+            }
+        }
         return null;
     }
 }
