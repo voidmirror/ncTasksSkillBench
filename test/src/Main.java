@@ -18,18 +18,34 @@
 //    }
 //}
 
+import sun.awt.image.ImageWatched;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
+
 class Main {
+
     public static void main(String[] args) {
-        LinkedList<Integer> l = new LinkedList();
+        List<String> arrayList = new ArrayList<String>();
+        arrayList.add("One");
+        arrayList.add("Two");
+        arrayList.add("Three");
 
-        
+        for (Iterator<String> iter = arrayList.iterator(); iter.hasNext();) {
+            String current = iter.next();
+            if (current.length() == 3) {
+                arrayList.remove(current);
+            }
+        }
+
+        for (String current:arrayList) {
+            System.out.println(current);
+        }
     }
-
 
 }
