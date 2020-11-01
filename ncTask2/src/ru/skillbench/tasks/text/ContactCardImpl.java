@@ -2,6 +2,7 @@ package ru.skillbench.tasks.text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -11,6 +12,7 @@ public class ContactCardImpl implements ContactCard {
     private String organization;                 //VCard: ORG
     private String gender;                       //VCard: GENDER  //TODO: Если поле GENDER отсутствует в данных или равно "M", этот метод возвращает false
     private Calendar birthday;                   //VCard: BDAY
+    private String birthdayString;
     private HashMap<String, String> telephone;   //VCard: TEL
     private boolean hasBegin = false;
     private boolean hasEnd = false;
@@ -65,14 +67,18 @@ public class ContactCardImpl implements ContactCard {
                     String vcard;
                     switch (st) {
                         case "BEGIN":
+//                            System.out.println("+++");
                             vcard = list.get(i).substring(j + 2);
-                            if (vcard.equals("VCARD") && j == 0) {
+//                            System.out.println(vcard + i);
+                            if (vcard.equals("VCARD") && i == 0) {
                                 hasBegin = true;
                             }
                             break;
                         case "END":
+//                            System.out.println("9+++");
                             vcard = list.get(i).substring(j + 2);
-                            if (vcard.equals("VCARD") && (j == list.size() - 1)) {
+//                            System.out.println(vcard + i);
+                            if (vcard.equals("VCARD") && (i == list.size() - 1)) {
                                 hasEnd = true;
                             }
                             break;
@@ -111,28 +117,30 @@ public class ContactCardImpl implements ContactCard {
                                 telephone.put(vcardSplit[l], vcardSplit[vcardSplit.length - 1]);
                             }
                             break;
-                        default:
-                            throw new InputMismatchException();
+//                        default:
+//                            throw new InputMismatchException();
                     }
-                } else {
-
+                } else if (j > 6) {
+                    throw new InputMismatchException();
                 }
             }
         }
 
-//        System.out.println(fullName);
-//        System.out.println(getOrganization());
-//        System.out.println(getBirthday());
-//        for (Map.Entry entry : telephone.entrySet()) {
-//            System.out.println(entry);
-//        }
+        System.out.println(fullName);
+        System.out.println(getOrganization());
+        System.out.println(getBirthday());
+        for (Map.Entry entry : telephone.entrySet()) {
+            System.out.println(entry);
+        }
+        System.out.println(hasBegin);
+        System.out.println(hasEnd);
 
         if (hasBegin && hasEnd && organization != null & fullName != null) {
             return this;
         } else {
             throw new NoSuchElementException();
         }
-        return null;
+//        return null;
     }
 
     @Override
@@ -158,12 +166,21 @@ public class ContactCardImpl implements ContactCard {
 
     @Override
     public Calendar getBirthday() {
-        return birthday;
+        if (birthday == null) {
+            throw new NoSuchElementException();
+        } else {
+            return birthday;
+        }
     }
 
     @Override
     public Period getAge() {
-        DateTimeFormatter formatter;    //TODO: понять, как оно работает
+        //TODO: понять, как оно работает
+        DateTimeFormatter formatter = new DateTimeFormatter.ISO_LOCAL_DATE
+        if (birthday == null) {
+            throw new NoSuchElementException();
+        }
+
         return null;
     }
 
