@@ -2,8 +2,10 @@ package ru.skillbench.tasks.text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -176,17 +178,26 @@ public class ContactCardImpl implements ContactCard {
     @Override
     public Period getAge() {
         //TODO: понять, как оно работает
-        DateTimeFormatter formatter = new DateTimeFormatter.ISO_LOCAL_DATE
+//        DateTimeFormatter formatter = new DateTimeFormatter.ISO_LOCAL_DATE.format(2018, 3, 3);
+        LocalDate start = Instant.ofEpochMilli(birthday.getTimeInMillis()).atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDate();
+
+
         if (birthday == null) {
             throw new NoSuchElementException();
         }
 
-        return null;
+        Period here = Period.between(start, now);
+        System.out.println(here);
+        return here;
     }
 
     @Override
     public int getAgeYears() {
-        return 0;
+        if (birthday == null) {
+            throw new NoSuchElementException();
+        }
+        return getAge().getYears();
     }
 
     @Override
