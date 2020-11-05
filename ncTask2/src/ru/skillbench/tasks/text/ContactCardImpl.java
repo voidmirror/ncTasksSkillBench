@@ -1,5 +1,7 @@
 package ru.skillbench.tasks.text;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -8,11 +10,13 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ContactCardImpl implements ContactCard {
     private String fullName;                     //VCard: FN
     private String organization;                 //VCard: ORG
-    private String gender;                       //VCard: GENDER  //TODO: Если поле GENDER отсутствует в данных или равно "M", этот метод возвращает false
+    private String gender = "M";                       //VCard: GENDER  //TODO: Если поле GENDER отсутствует в данных или равно "M", этот метод возвращает false
     private Calendar birthday;                   //VCard: BDAY
     private String birthdayString;
     private HashMap<String, String> telephone;   //VCard: TEL
@@ -41,9 +45,9 @@ public class ContactCardImpl implements ContactCard {
         while (scanner.hasNext()) {
             list.add(scanner.nextLine());
         }
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i));
-        }
+//        for (int i = 0; i < list.size(); i++) {
+//            System.out.println(list.get(i));
+//        }
 
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < list.size(); i++) {
@@ -59,11 +63,17 @@ public class ContactCardImpl implements ContactCard {
 
 
             // old-----------
+            boolean isEmpty = true;
             StringBuffer s = new StringBuffer();
             for (int j = 0; j < list.get(i).length(); j++) {
+
                 if (list.get(i).charAt(i) != ':' || list.get(i).charAt(i) != ';') {
                     s.append(list.get(i).charAt(j));
-
+//                    System.out.println("++");
+                    if (j > 6 && isEmpty) {
+//                        System.out.println(s);
+                        throw new NoSuchElementException();
+                    }
 
                     String st = s.toString();
                     String vcard;
@@ -75,6 +85,7 @@ public class ContactCardImpl implements ContactCard {
                             if (vcard.equals("VCARD") && i == 0) {
                                 hasBegin = true;
                             }
+                            isEmpty = false;
                             break;
                         case "END":
 //                            System.out.println("9+++");
@@ -83,15 +94,22 @@ public class ContactCardImpl implements ContactCard {
                             if (vcard.equals("VCARD") && (i == list.size() - 1)) {
                                 hasEnd = true;
                             }
+                            isEmpty = false;
                             break;
                         case "FN":
                             fullName = list.get(i).substring(j + 2);
+                            isEmpty = false;
                             break;
                         case "ORG":
                             organization = list.get(i).substring(j + 2);
+                            isEmpty = false;
                             break;
                         case "GENDER":
                             gender = list.get(i).substring(j + 2);
+                            if (!(gender.equals("M") || gender.equals("F"))) {
+                                throw new InputMismatchException();
+                            }
+                            isEmpty = false;
                             break;
                         case "BDAY":
                             String bd = list.get(i).substring(j + 2);
@@ -103,8 +121,9 @@ public class ContactCardImpl implements ContactCard {
                                 birthday = new GregorianCalendar();
                                 birthday.setTime(sdf);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                throw new InputMismatchException();
                             }
+                            isEmpty = false;
                             break;
                         case "TEL":
                             if (telephone == null) {
@@ -118,24 +137,32 @@ public class ContactCardImpl implements ContactCard {
                             for (int l = 0; l < vcardSplit.length - 1; l++) {
                                 telephone.put(vcardSplit[l], vcardSplit[vcardSplit.length - 1]);
                             }
+                            for (Map.Entry entry : telephone.entrySet()) {
+                                Pattern pattern = Pattern.compile("[0-9]+");
+                                if (!(Pattern.matches(pattern.pattern(), (CharSequence) entry.getValue()))) {
+                                    throw new InputMismatchException();
+                                }
+                            }
+                            isEmpty = false;
                             break;
 //                        default:
 //                            throw new InputMismatchException();
                     }
-                } else if (j > 6) {
-                    throw new InputMismatchException();
+//                } else if (j > 6) {
+//                    System.out.println(list.get(i).charAt(j));
+//                    throw new InputMismatchException();
                 }
             }
         }
 
-        System.out.println(fullName);
-        System.out.println(getOrganization());
-        System.out.println(getBirthday());
-        for (Map.Entry entry : telephone.entrySet()) {
-            System.out.println(entry);
-        }
-        System.out.println(hasBegin);
-        System.out.println(hasEnd);
+//        System.out.println(fullName);
+//        System.out.println(getOrganization());
+//        System.out.println(getBirthday());
+//        for (Map.Entry entry : telephone.entrySet()) {
+//            System.out.println(entry);
+//        }
+//        System.out.println(hasBegin);
+//        System.out.println(hasEnd);
 
         if (hasBegin && hasEnd && organization != null & fullName != null) {
             return this;
@@ -178,17 +205,18 @@ public class ContactCardImpl implements ContactCard {
     @Override
     public Period getAge() {
         //TODO: понять, как оно работает
+        if (birthday == null) {
+            throw new NoSuchElementException();
+        }
 //        DateTimeFormatter formatter = new DateTimeFormatter.ISO_LOCAL_DATE.format(2018, 3, 3);
         LocalDate start = Instant.ofEpochMilli(birthday.getTimeInMillis()).atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate now = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDate();
 
 
-        if (birthday == null) {
-            throw new NoSuchElementException();
-        }
+
 
         Period here = Period.between(start, now);
-        System.out.println(here);
+//        System.out.println(here);
         return here;
     }
 
@@ -202,6 +230,23 @@ public class ContactCardImpl implements ContactCard {
 
     @Override
     public String getPhone(String type) {
-        return null;
+        if (!telephone.containsKey(type)) {
+            throw new NoSuchElementException();
+        }
+        StringBuffer s = new StringBuffer();
+        s.append("(");
+        for (int i = 0; i < 10; i++) {
+            switch (i) {
+                case 3:
+                    s.append(") ");
+                    break;
+                case 6:
+                    s.append('-');
+                    break;
+            }
+            s.append(telephone.get(type).charAt(i));
+        }
+
+        return s.toString();
     }
 }
