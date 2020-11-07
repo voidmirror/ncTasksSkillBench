@@ -4,28 +4,49 @@ import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import ru.skillbench.tasks.text.WordCounter;
 import ru.skillbench.tasks.text.WordCounterImpl;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-//        String t = "fghjkl24m, 32j4kr nj2     jmlkml32\n\nhbj\n  \n nm,a";
-//        String t = "<[commodo, odio, accumsan, nonummy, erat, facilisis, euismod, vero, ea, vel, molestie, feugiat, ut, wisi, volutpat, enim, exerci, ad, lobortis, consequat, in, velit, dignissim, vulputate, iriure, esse>, et, eu,< ex, at, eum, nostrud, ullamcorper, laoreet, qui, minim, veniam, hendrerit, autem, tincidunt, nisl, aliquam, magna, aliquip, nibh, quis, illum, iusto, tation, eros]>";
-//        String t = "<[commodo, odio, accumsan, nonummy, erat, facilisis, euismod, vero, ea, vel, molestie> hjk <ghj>";
-//        String t = null;
-        String t = "bac <ccab> <abc> <cba abc abc> <ccab>";
-//        System.out.println(t);
+        StringFilter stringFilter = new StringFilterImpl();
+        stringFilter.add("1 yui hjk bnm");
+        stringFilter.add("2 bnm oosikje sfkm skof");
+        stringFilter.add("3 hjk jdf kds");
+        stringFilter.add("4 jkrsngv kfed dklf hjk");
+        stringFilter.add("5 srgkn mdfkm lef a");
+        stringFilter.add("hjkdfskml 6");
+        stringFilter.add("7 jnksrvjhjksdkjvg mdkl mkes");
 
-        WordCounter wordCounter = new WordCounterImpl();
-        wordCounter.setText(t);
-        Map<String, Long> map = wordCounter.getWordCounts();
-        List<Map.Entry<String, Long>> list = wordCounter.getWordCountsSorted();
-        for (Map.Entry m : map.entrySet()) {
-            System.out.println(m);
+        for (String s : stringFilter.getCollection()) {
+            System.out.println(s);
         }
         System.out.println();
-        for (Map.Entry m : list) {
-            System.out.println(m);
+        System.out.println("---------------------");
+        System.out.println();
+
+//        Iterator<String> iterator = stringFilter.getStringsContaining("hjk");
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
+
+        System.out.println();
+        System.out.println("---------------------");
+        System.out.println();
+
+        for (String s : stringFilter.getCollection()) {
+            System.out.println(s);
+        }
+
+        System.out.println();
+        System.out.println("---------------------");
+        System.out.println();
+
+        Iterator<String> iterator = stringFilter.getStringsStartingWith("hjk");
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());        //TODO: уходит в бесконечность
         }
     }
 }
