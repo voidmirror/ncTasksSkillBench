@@ -6,6 +6,23 @@ import java.util.regex.Pattern;
 public class StringFilterImpl implements StringFilter {
     HashSet<String> hashSet = null;
 
+    private boolean isInputNull(String s) {
+        if (s == null || s.equals("")) {
+
+        }
+        return true; //TODO: !!
+    }
+
+    private HashSet<String> setCopy(String begin) {
+        if (begin == null || begin.equals("")) {
+            return hashSet;
+        }
+
+        HashSet<String> copy = (HashSet<String>) hashSet.clone();
+//        Iterator<String> iterator = copy.iterator();
+        return copy;
+    }
+
     @Override
     public void add(String s) {
         if (hashSet == null) {
@@ -59,24 +76,21 @@ public class StringFilterImpl implements StringFilter {
             return hashSet.iterator();
         }
 
-        HashSet copy = (HashSet)hashSet.clone();
-        Iterator iterator = copy.iterator();
-//        for (String s : hashSet) {
-//            if (!s.contains(chars)) {
-//
-//            }
-//            iterator.next();
-//        }
-
+        HashSet<String> copy = (HashSet)hashSet.clone();
+        Iterator<String> iterator = copy.iterator();
+        Pattern pattern = Pattern.compile("^" + begin + ".*");
         while (iterator.hasNext()) {
-            Pattern pattern = Pattern.compile("^" + Pattern.quote(begin) + ".*");
-            if (!Pattern.matches(pattern.pattern(), begin)) {
+
+//            System.out.println(pattern);
+//            System.out.println(pattern.pattern());
+            if (!Pattern.matches(pattern.pattern(), iterator.next())) {
+//                System.out.println("+++");
                 iterator.remove();
             }
         }
 
 
-        return iterator;
+        return copy.iterator();
     }
 
     @Override

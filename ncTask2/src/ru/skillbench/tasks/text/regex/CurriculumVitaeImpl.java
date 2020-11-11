@@ -1,10 +1,11 @@
 package ru.skillbench.tasks.text.regex;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CurriculumVitaeImpl implements CurriculumVitae {
-    String text = null;
-
+    private String text = null;
+    private ArrayList<Phone> phones = null;
 
     @Override
     public void setText(String text) {
@@ -13,12 +14,12 @@ public class CurriculumVitaeImpl implements CurriculumVitae {
 
     @Override
     public String getText() {
-        System.out.println("---");
+//        System.out.println("---");
         if (text == null) {
-            System.out.println("hjkl");
+//            System.out.println("hjkl");
             throw new IllegalStateException();
         } else {
-            System.out.println("+++");
+//            System.out.println("+++");
             return text;
         }
     }

@@ -218,7 +218,7 @@ public interface CurriculumVitae {
 			} else {
 				String sValue = Integer.toString(value); 
 				int j = fromStart ? sb.indexOf(sValue) : sb.lastIndexOf(sValue);
-				if(j < 0 || (fromStart && j > 1) || (!fromStart && j < sb.length()-sValue.length()) ){
+				if(j < 0 || (fromStart && j > 1) |  (!fromStart && j < sb.length()-sValue.length()) ){
 					s = "{WRONG:"+sValue+"}";
 				}
 			}

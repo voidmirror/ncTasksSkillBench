@@ -20,9 +20,9 @@ public class Main {
         stringFilter.add("hjkdfskml 6");
         stringFilter.add("7 jnksrvjhjksdkjvg mdkl mkes");
 
-        for (String s : stringFilter.getCollection()) {
-            System.out.println(s);
-        }
+//        for (String s : stringFilter.getCollection()) {
+//            System.out.println(s);
+//        }
         System.out.println();
         System.out.println("---------------------");
         System.out.println();
@@ -36,9 +36,9 @@ public class Main {
         System.out.println("---------------------");
         System.out.println();
 
-        for (String s : stringFilter.getCollection()) {
-            System.out.println(s);
-        }
+//        for (String s : stringFilter.getCollection()) {
+//            System.out.println(s);
+//        }
 
         System.out.println();
         System.out.println("---------------------");
