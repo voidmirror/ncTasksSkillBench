@@ -4,23 +4,30 @@ import java.util.*;
 
 public class TreeNodeImpl implements TreeNode {
     private TreeNode parent = null;
-    private ArrayList<TreeNode> children = new ArrayList<>();
+    private HashSet<TreeNode> children;
     private boolean expanded;
     private Object data = null;
 
-    TreeNodeImpl() {};
-    TreeNodeImpl(Object data) {
-        this.data = data;
-    }
+//    TreeNodeImpl() {};
+//    TreeNodeImpl(Object data) {
+//        this.data = data;
+//    }
     
     @Override
     public TreeNode getParent() {
         return parent;
     }
 
+    public void plainSetParent(TreeNode parent) {
+        this.parent = parent;
+    }
+
     @Override
     public void setParent(TreeNode parent) {
         this.parent = parent;
+        if (parent.findChild(this) == null) {
+            parent.addChild(this);
+        }
     }
 
     @Override
@@ -48,14 +55,16 @@ public class TreeNodeImpl implements TreeNode {
 
     @Override
     public Iterator<TreeNode> getChildrenIterator() {
-        Iterator<TreeNode> iterator = children.iterator();
-        return iterator;
+//        Iterator<TreeNode> iterator = children.iterator();
+        return children.iterator();
     }
 
     @Override
     public void addChild(TreeNode child) {
         children.add(child);
-        child.setParent(this);
+        if (child.getParent() != this) {
+            child.setParent(this);
+        }
     }
 
     @Override
