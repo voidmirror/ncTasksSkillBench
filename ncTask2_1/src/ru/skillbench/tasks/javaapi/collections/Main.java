@@ -55,22 +55,59 @@ public class Main {
         // TREE NODE ================================================================\
         // TREE NODE ================================================================\
 
-        TreeNode treeNode = new TreeNodeImpl();
-        treeNode.setData("hello");
-        treeNode.setParent(new TreeNodeImpl());
-        treeNode.getParent().setData("im parent");
-        for (int i = 0; i < 10; i++) {
-            TreeNode t = new TreeNodeImpl();
-            t.setData("im child " + i);
-            t.setParent(treeNode.getParent());
-        }
-        System.out.println(treeNode.getParent().getData());
-        Iterator<TreeNode> iterator = treeNode.getParent().getChildrenIterator();
-        while (iterator.hasNext()) {
-            System.out.println("+++");
-            System.out.println(iterator.next().getData());
-        }
+//        TreeNode treeNode = new TreeNodeImpl();
+//        treeNode.setData("hello");
+//        treeNode.setParent(new TreeNodeImpl());
+//        treeNode.getParent().setData("im parent");
+//        for (int i = 0; i < 10; i++) {
+//            TreeNode t = new TreeNodeImpl();
+//            t.setData("im child " + i);
+//            t.setParent(treeNode.getParent());
+//        }
+//        System.out.println(treeNode.getParent().getData());
+//        Iterator<TreeNode> iterator = treeNode.getParent().getChildrenIterator();
+//        while (iterator.hasNext()) {
+//            System.out.println("+++");
+//            System.out.println(iterator.next().getData());
+//        }
 
+        // TREE NODE ================================================================\
+        // TREE NODE ================================================================\
+        // TREE NODE ================================================================\
+
+
+        TreeNode treeNode = new TreeNodeImpl();
+        treeNode.setData("Root");
+//        treeNode.printAllChildren();
+
+        TreeNode leaf1 = new TreeNodeImpl();
+        leaf1.setData("leaf1");
+        treeNode.addChild(leaf1);
+//        treeNode.printAllChildren();
+
+        TreeNode leaf2 = new TreeNodeImpl();
+        leaf2.setData("leaf2");
+        leaf1.addChild(leaf2);
+//        treeNode.printAllChildren();
+
+
+        TreeNode leaf21 = new TreeNodeImpl();
+        leaf21.setData("leaf3");
+        treeNode.addChild(leaf21);
+//        treeNode.printAllChildren();
+
+        treeNode.printAllChildren();
+        System.out.println();
+        System.out.println();
+
+//        treeNode.printTree();
+        System.out.println();
+
+        TreeNode res = treeNode.findChild("leaf2");
+        System.out.println(res);
+        if (res != null) {
+            System.out.println(res.getData());
+        }
 
 
     }

@@ -123,4 +123,7 @@ public interface TreeNode {
      * @return Найденный узел. Или <code>null</code> если не было найдено узла, содержащего такой <code>data</code>.
      */
     TreeNode findChild(Object data);
+
+    public void printAllChildren();
+    public void printTree();
 }
