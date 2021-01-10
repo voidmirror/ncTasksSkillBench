@@ -202,12 +202,12 @@ public class TreeNodeImpl implements TreeNode {
 
 
         TreeNode saver = null;
-        System.out.println(saver);
+//        System.out.println(saver);
 
         if (data == null) {
             if (this.data == null) {
-                saver = this;
-//                return this;
+//                saver = this;
+                return this;
             } else {
                 if (children != null) {
                     for (TreeNode tn : children) {
@@ -219,13 +219,12 @@ public class TreeNodeImpl implements TreeNode {
 //            System.out.println(this.getData());
             System.out.println(data + " " + getData() + " " + data.equals(this.getData()));
             if (data.equals(this.getData())) {
-                saver = this;
-                System.out.println(saver.getData());
-//                return this;
+                return this;
             } else {
                 if (children != null) {
                     for (TreeNode tn : children) {
-                        tn.findChild(data);
+//                        saver = tn.findChild(data);
+                        return tn.findChild(data);
                     }
                 }
             }
@@ -239,7 +238,7 @@ public class TreeNodeImpl implements TreeNode {
 //            }
 //        }
 
-        return saver;
+        return null;
     }
 
 
