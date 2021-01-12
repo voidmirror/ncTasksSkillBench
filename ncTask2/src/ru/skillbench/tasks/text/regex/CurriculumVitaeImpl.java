@@ -35,6 +35,13 @@ public class CurriculumVitaeImpl implements CurriculumVitae {
         while (matcher.find()) {
 //            System.out.println(matcher.group());
             String current = matcher.group();
+//            String patternNumber =
+            String patternAreaCode = "\\(([1-9][0-9]{2})\\)";
+            String patternExtension = "\\s*ext\\.?\\s*([0-9]+)";    //TODO: if it IS in whole number pattern then grab from in last numbers
+            String patternExtensionNum = "([0-9]+)";
+            
+//            String patternNumber
+
 
 
 
