@@ -35,12 +35,26 @@ public class CurriculumVitaeImpl implements CurriculumVitae {
         while (matcher.find()) {
 //            System.out.println(matcher.group());
             String current = matcher.group();
-//            String patternNumber =
-            String patternAreaCode = "\\(([1-9][0-9]{2})\\)";
-            String patternExtension = "\\s*ext\\.?\\s*([0-9]+)";    //TODO: if it IS in whole number pattern then grab from in last numbers
-            String patternExtensionNum = "([0-9]+)";
-            
-//            String patternNumber
+            Pattern patternAreaCode = Pattern.compile("\\(([1-9][0-9]{2})\\)");
+            Pattern patternExtension = Pattern.compile("ext\\.?\\s*([0-9]+)");    //TODO: if it IS in whole number pattern then grab from in last numbers
+            Pattern patternExtensionNum = Pattern.compile("([0-9]+)");
+            Pattern patternNumber = Pattern.compile("([1-9][0-9]{2})[-. ]*(\\d{2})[-. ]*(\\d{2})");
+
+            Matcher matcherAreaCode = patternAreaCode.matcher(current);
+            Matcher matcherExtension = patternExtension.matcher(current);
+            Matcher matcherNumber = patternNumber.matcher(current);
+
+            if (matcherExtension.find()) {
+                String extension = matcherExtension.group();
+                Matcher matcherExtensionNum = patternExtensionNum.matcher(extension);
+                matcherExtensionNum.find();
+                
+            }
+
+
+
+
+//            Phone currentPhone = new Phone()
 
 
 
